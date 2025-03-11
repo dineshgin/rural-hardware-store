@@ -1,0 +1,275 @@
+/* Main Styles for Rural Hardware Store Application */
+
+/* Global Styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#app {
+  height: 100%;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .nav-link {
+  color: #f8f9fa;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-size: 1.1rem;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #495057;
+}
+
+.sidebar .nav-link.active {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* Main Content Styles */
+.main-content {
+  height: 100vh;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+}
+
+/* Page Container Styles */
+.page-container {
+  display: none;
+}
+
+.page-container.active {
+  display: block;
+}
+
+/* Card Styles */
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.card-header {
+  font-weight: bold;
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+}
+
+/* Table Styles */
+.table th {
+  font-weight: 600;
+  background-color: #f8f9fa;
+}
+
+/* Form Styles */
+.form-control, .form-select {
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+/* Button Styles */
+.btn {
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-weight: 500;
+}
+
+/* Large Buttons for Easy Touch */
+.btn-lg {
+  padding: 12px 20px;
+  font-size: 1.2rem;
+}
+
+/* High Contrast Elements for Elderly Users */
+.high-contrast {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Print Styles */
+@media print {
+  .sidebar, .no-print {
+    display: none !important;
+  }
+  
+  .main-content {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    z-index: 1000;
+    width: 250px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar.show {
+    transform: translateX(0);
+  }
+  
+  .main-content {
+    width: 100%;
+  }
+}
+
+/* Invoice Styles */
+.invoice-header {
+  border-bottom: 2px solid #dee2e6;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.invoice-footer {
+  border-top: 2px solid #dee2e6;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+/* Dashboard Widgets */
+.widget {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.widget-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #495057;
+}
+
+/* Accessibility Features */
+.large-text {
+  font-size: 1.2rem;
+}
+
+.extra-padding {
+  padding: 15px !important;
+}
+
+/* Status Indicators */
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.status-paid {
+  background-color: #28a745;
+}
+
+.status-partial {
+  background-color: #ffc107;
+}
+
+.status-unpaid {
+  background-color: #dc3545;
+}
+
+/* Product Card */
+.product-card {
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+  height: 150px;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-details {
+  padding: 15px;
+}
+
+/* Search Box */
+.search-box {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.search-box input {
+  padding-left: 40px;
+  border-radius: 20px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 10px;
+  color: #6c757d;
+}
+
+/* Loading Spinner */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1050;
+}
+
+/* Help Button */
+.help-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #0d6efd;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000;
+}
