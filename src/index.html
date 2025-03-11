@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rural Hardware Store</title>
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./styles/main.css">
+</head>
+<body>
+  <div id="app">
+    <!-- React will render here -->
+    <div class="container-fluid h-100">
+      <div class="row h-100">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar bg-dark text-light p-0">
+          <div class="d-flex flex-column p-3">
+            <h3 class="text-center mb-4">Hardware Store</h3>
+            <div class="nav flex-column nav-pills">
+              <button class="nav-link active mb-2" data-page="dashboard">Dashboard</button>
+              <button class="nav-link mb-2" data-page="sales">Sales</button>
+              <button class="nav-link mb-2" data-page="inventory">Inventory</button>
+              <button class="nav-link mb-2" data-page="customers">Customers</button>
+              <button class="nav-link mb-2" data-page="reports">Reports</button>
+              <button class="nav-link mb-2" data-page="settings">Settings</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-10 main-content">
+          <div class="container-fluid p-4">
+            <!-- Content will be loaded here -->
+            <div id="page-content">
+              <div id="dashboard-page" class="page-container active">
+                <h2>Dashboard</h2>
+                <div class="row mt-4">
+                  <div class="col-md-3">
+                    <div class="card text-white bg-primary mb-3">
+                      <div class="card-header">Today's Sales</div>
+                      <div class="card-body">
+                        <h5 class="card-title">₹0.00</h5>
+                        <p class="card-text">0 transactions</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="card text-white bg-success mb-3">
+                      <div class="card-header">Total Products</div>
+                      <div class="card-body">
+                        <h5 class="card-title">0</h5>
+                        <p class="card-text">In inventory</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="card text-white bg-warning mb-3">
+                      <div class="card-header">Low Stock</div>
+                      <div class="card-body">
+                        <h5 class="card-title">0</h5>
+                        <p class="card-text">Items below minimum</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="card text-white bg-danger mb-3">
+                      <div class="card-header">Pending Payments</div>
+                      <div class="card-body">
+                        <h5 class="card-title">₹0.00</h5>
+                        <p class="card-text">0 invoices</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row mt-4">
+                  <div class="col-md-8">
+                    <div class="card">
+                      <div class="card-header">
+                        Recent Sales
+                      </div>
+                      <div class="card-body">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Invoice #</th>
+                              <th>Customer</th>
+                              <th>Date</th>
+                              <th>Amount</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td colspan="5" class="text-center">No recent sales</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="card">
+                      <div class="card-header">
+                        Quick Actions
+                      </div>
+                      <div class="card-body">
+                        <div class="d-grid gap-2">
+                          <button class="btn btn-primary" type="button">New Sale</button>
+                          <button class="btn btn-success" type="button">Add Product</button>
+                          <button class="btn btn-info" type="button">Add Customer</button>
+                          <button class="btn btn-warning" type="button">Generate Report</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Other pages will be added here -->
+              <div id="sales-page" class="page-container">
+                <h2>Sales</h2>
+                <!-- Sales content will be added here -->
+              </div>
+              
+              <div id="inventory-page" class="page-container">
+                <h2>Inventory</h2>
+                <!-- Inventory content will be added here -->
+              </div>
+              
+              <div id="customers-page" class="page-container">
+                <h2>Customers</h2>
+                <!-- Customers content will be added here -->
+              </div>
+              
+              <div id="reports-page" class="page-container">
+                <h2>Reports</h2>
+                <!-- Reports content will be added here -->
+              </div>
+              
+              <div id="settings-page" class="page-container">
+                <h2>Settings</h2>
+                <!-- Settings content will be added here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./renderer.js"></script>
+</body>
+</html>
