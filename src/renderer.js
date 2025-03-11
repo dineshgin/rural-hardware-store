@@ -1,4 +1,5 @@
 // Renderer process - handles UI interactions
+const { ipcRenderer } = require('electron');
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -90,19 +91,44 @@ document.addEventListener('DOMContentLoaded', () => {
 // Function to initialize dashboard with data
 async function initializeDashboard() {
   try {
-    // In a real app, this would fetch data from the database
-    // For now, we'll just simulate loading
-    
     // Show loading state
     const dashboardCards = document.querySelectorAll('.card-title');
     dashboardCards.forEach(card => {
       card.innerHTML = '<small>Loading...</small>';
     });
     
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
     
-    // Update with mock data
+    // Fetch real data from the database
+    const [dailySales, products, lowStock, invoices] = await Promise.all([
+      ipcRenderer.invoke('get-daily-sales', today),
+      ipcRenderer.invoke('get-products'),
+      ipcRenderer.invoke('get-low-stock'),
+      ipcRenderer.invoke('get-invoices')
+    ]);
+    
+    // Calculate pending payments
+    const pendingInvoices = invoices.filter(inv => inv.payment_status !== 'Paid');
+    const pendingAmount = pendingInvoices.reduce((sum, inv) => sum + inv.final_amount, 0);
+    
+    // Update dashboard with real data
+    updateDashboardData({
+      todaySales: dailySales?.total || 0,
+      transactionCount: dailySales?.count || 0,
+      productCount: products.length,
+      lowStockCount: lowStock.length,
+      pendingAmount: pendingAmount,
+      pendingInvoices: pendingInvoices.length
+    });
+    
+    // Update recent sales table
+    updateRecentSales(invoices.slice(0, 5));
+    
+  } catch (error) {
+    console.error('Error loading dashboard data:', error);
+    
+    // Update with mock data if there's an error
     updateDashboardData({
       todaySales: 12500,
       transactionCount: 8,
@@ -111,9 +137,6 @@ async function initializeDashboard() {
       pendingAmount: 8750,
       pendingInvoices: 3
     });
-    
-  } catch (error) {
-    console.error('Error loading dashboard data:', error);
   }
 }
 
@@ -148,31 +171,132 @@ function updateDashboardData(data) {
   cards[3].querySelector('.card-text').textContent = `${data.pendingInvoices} invoices`;
 }
 
-// IPC communication with main process
-// This would be used to communicate with the database
-// For example:
-/*
-const { ipcRenderer } = require('electron');
+// Update recent sales table
+function updateRecentSales(invoices) {
+  const tableBody = document.querySelector('.table tbody');
+  if (!tableBody) return;
+  
+  // Format currency for Indian Rupees
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0
+    }).format(amount);
+  };
+  
+  // Format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-IN');
+  };
+  
+  // Clear existing rows
+  tableBody.innerHTML = '';
+  
+  // If no invoices, show message
+  if (!invoices || invoices.length === 0) {
+    tableBody.innerHTML = '<tr><td colspan="5" class="text-center">No recent sales</td></tr>';
+    return;
+  }
+  
+  // Add invoice rows
+  invoices.forEach(invoice => {
+    const row = document.createElement('tr');
+    
+    // Create status indicator
+    let statusClass = '';
+    switch (invoice.payment_status) {
+      case 'Paid':
+        statusClass = 'status-paid';
+        break;
+      case 'Partial':
+        statusClass = 'status-partial';
+        break;
+      case 'Unpaid':
+        statusClass = 'status-unpaid';
+        break;
+    }
+    
+    row.innerHTML = `
+      <td>${invoice.invoice_number}</td>
+      <td>${invoice.customer_name || 'Walk-in Customer'}</td>
+      <td>${formatDate(invoice.date)}</td>
+      <td>${formatCurrency(invoice.final_amount)}</td>
+      <td>
+        <span class="status-indicator ${statusClass}"></span>
+        ${invoice.payment_status}
+      </td>
+    `;
+    
+    tableBody.appendChild(row);
+  });
+}
 
-// Request data from main process
+// Database operations through IPC
+// Customer operations
 async function fetchCustomers() {
   try {
-    const customers = await ipcRenderer.invoke('fetch-customers');
-    return customers;
+    return await ipcRenderer.invoke('get-customers');
   } catch (error) {
     console.error('Error fetching customers:', error);
     return [];
   }
 }
 
-// Send data to main process
 async function saveCustomer(customerData) {
   try {
-    const result = await ipcRenderer.invoke('save-customer', customerData);
-    return result;
+    return await ipcRenderer.invoke('save-customer', customerData);
   } catch (error) {
     console.error('Error saving customer:', error);
     throw error;
   }
 }
-*/
+
+// Product operations
+async function fetchProducts() {
+  try {
+    return await ipcRenderer.invoke('get-products');
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return [];
+  }
+}
+
+async function saveProduct(productData) {
+  try {
+    return await ipcRenderer.invoke('save-product', productData);
+  } catch (error) {
+    console.error('Error saving product:', error);
+    throw error;
+  }
+}
+
+// Invoice operations
+async function createInvoice(invoiceData, items) {
+  try {
+    return await ipcRenderer.invoke('save-invoice', { invoice: invoiceData, items });
+  } catch (error) {
+    console.error('Error creating invoice:', error);
+    throw error;
+  }
+}
+
+async function getNextInvoiceNumber() {
+  try {
+    return await ipcRenderer.invoke('get-next-invoice-number');
+  } catch (error) {
+    console.error('Error getting next invoice number:', error);
+    return 'INV-0001';
+  }
+}
+
+// Backup operations
+async function createBackup() {
+  try {
+    return await ipcRenderer.invoke('data-backup');
+  } catch (error) {
+    console.error('Error creating backup:', error);
+    throw error;
+  }
+}
