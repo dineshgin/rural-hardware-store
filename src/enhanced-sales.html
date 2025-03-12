@@ -1,0 +1,297 @@
+<!-- Enhanced Sales Page with Improved Add Item Modal -->
+<div id="sales-page" class="page-container">
+  <h2>Sales</h2>
+  <div class="row mb-3">
+    <div class="col">
+      <button id="new-sale-btn" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> New Sale
+      </button>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header">
+      Recent Sales
+    </div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Invoice #</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="sales-table-body">
+          <tr>
+            <td colspan="7" class="text-center">Loading sales data...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- New Sale Modal -->
+<div class="modal fade" id="new-sale-modal" tabindex="-1" aria-labelledby="newSaleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newSaleModalLabel">New Sale</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="customer-select" class="form-label">Customer</label>
+            <div class="input-group">
+              <select id="customer-select" class="form-select">
+                <option value="">Select customer</option>
+                <!-- Customer options will be loaded here -->
+              </select>
+              <button class="btn btn-outline-secondary" type="button" id="quick-add-customer-btn">
+                <i class="bi bi-plus"></i> Add New
+              </button>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="sale-date" class="form-label">Date</label>
+            <input type="date" class="form-control" id="sale-date">
+          </div>
+        </div>
+        
+        <div class="row mb-3">
+          <div class="col">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5>Items</h5>
+              <button id="add-item-btn" class="btn btn-success btn-sm">
+                <i class="bi bi-plus"></i> Add Item
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered" id="sale-items-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr id="empty-row">
+                    <td colspan="5" class="text-center">No items added</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="sale-notes" class="form-label">Notes</label>
+              <textarea class="form-control" id="sale-notes" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Subtotal:</span>
+                  <span id="subtotal">₹0.00</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Tax (18%):</span>
+                  <span id="tax-amount">₹0.00</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Discount:</span>
+                  <div class="input-group input-group-sm" style="width: 120px;">
+                    <input type="number" class="form-control" id="discount-amount" value="0">
+                    <span class="input-group-text">₹</span>
+                  </div>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between fw-bold">
+                  <span>Total:</span>
+                  <span id="total-amount">₹0.00</span>
+                </div>
+                <div class="mt-3">
+                  <label for="payment-method" class="form-label">Payment Method</label>
+                  <select class="form-select" id="payment-method">
+                    <option value="cash">Cash</option>
+                    <option value="card">Card</option>
+                    <option value="upi">UPI</option>
+                    <option value="credit">Store Credit</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="save-sale-btn">Complete Sale</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Enhanced Add Item Modal with Quick Add Product Feature -->
+<div class="modal fade" id="add-item-modal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addItemModalLabel">Add Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="barcode-input" class="form-label">Scan Barcode</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="barcode-input" placeholder="Scan or enter barcode">
+            <button class="btn btn-outline-secondary" type="button" id="search-barcode-btn">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="product-select" class="form-label">Select Product</label>
+          <div class="input-group">
+            <select class="form-select" id="product-select">
+              <option value="">Select a product</option>
+              <!-- Product options will be loaded here -->
+            </select>
+            <button class="btn btn-outline-secondary" type="button" id="quick-add-product-btn">
+              <i class="bi bi-plus"></i> New
+            </button>
+          </div>
+        </div>
+        
+        <!-- Quick Add Product Form (initially hidden) -->
+        <div id="quick-add-product-form" style="display: none;">
+          <hr>
+          <h6>Quick Add New Product</h6>
+          <div class="mb-3">
+            <label for="quick-product-name" class="form-label">Product Name*</label>
+            <input type="text" class="form-control" id="quick-product-name" required>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="quick-category-select" class="form-label">Category</label>
+              <select class="form-select" id="quick-category-select">
+                <option value="">Select category</option>
+                <!-- Categories will be loaded here -->
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="quick-unit-select" class="form-label">Unit*</label>
+              <select class="form-select" id="quick-unit-select" required>
+                <option value="">Select unit</option>
+                <!-- Units will be loaded here -->
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="quick-purchase-price" class="form-label">Purchase Price*</label>
+              <div class="input-group">
+                <span class="input-group-text">₹</span>
+                <input type="number" class="form-control" id="quick-purchase-price" step="0.01" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="quick-selling-price" class="form-label">Selling Price*</label>
+              <div class="input-group">
+                <span class="input-group-text">₹</span>
+                <input type="number" class="form-control" id="quick-selling-price" step="0.01" required>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="quick-current-stock" class="form-label">Current Stock*</label>
+              <input type="number" class="form-control" id="quick-current-stock" value="1" min="0" required>
+            </div>
+            <div class="col-md-6">
+              <label for="quick-barcode" class="form-label">Barcode</label>
+              <input type="text" class="form-control" id="quick-barcode">
+            </div>
+          </div>
+          <div class="d-grid">
+            <button type="button" class="btn btn-success" id="save-quick-product-btn">Save & Select</button>
+          </div>
+          <hr>
+        </div>
+        
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="product-price" class="form-label">Price</label>
+            <div class="input-group">
+              <span class="input-group-text">₹</span>
+              <input type="number" class="form-control" id="product-price" step="0.01">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="product-quantity" class="form-label">Quantity</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="product-quantity" value="1" min="0.01" step="0.01">
+              <span class="input-group-text" id="quantity-unit">pcs</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="item-total" class="form-label">Total</label>
+          <div class="input-group">
+            <span class="input-group-text">₹</span>
+            <input type="number" class="form-control" id="item-total" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirm-add-item-btn">Add to Sale</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Add Customer Modal -->
+<div class="modal fade" id="quick-add-customer-modal" tabindex="-1" aria-labelledby="quickAddCustomerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="quickAddCustomerModalLabel">Quick Add Customer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="quick-customer-name" class="form-label">Name*</label>
+          <input type="text" class="form-control" id="quick-customer-name" required>
+        </div>
+        <div class="mb-3">
+          <label for="quick-customer-phone" class="form-label">Phone</label>
+          <input type="tel" class="form-control" id="quick-customer-phone">
+        </div>
+        <div class="mb-3">
+          <label for="quick-customer-address" class="form-label">Address</label>
+          <textarea class="form-control" id="quick-customer-address" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="save-quick-customer-btn">Save & Select</button>
+      </div>
+    </div>
+  </div>
+</div>
