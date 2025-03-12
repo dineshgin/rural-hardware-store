@@ -1,74 +1,85 @@
-# Rural Hardware Store Management System
+# Rural Hardware Store
 
-A comprehensive retail management application designed for hardware stores in rural India.
+A retail management system for rural hardware stores, designed to work offline and be user-friendly for elderly users.
 
 ## Features
 
-### Customer Management
-- Store customer details (name, contact, address)
-- Track customer purchase history
-- Manage customer credit/payments
+- Product management
+- Customer management
+- Sales and invoicing
+- Inventory tracking
+- Reports generation
+- Offline functionality
 
-### Inventory Management
-- Track diverse products (paint, tools, nails, pipes, etc.)
-- Support multiple units of measurement (pieces, kg, liters, grams)
-- Easy stock entry and adjustment
-- Low stock alerts
-
-### Sales Processing
-- Simple POS interface for quick sales
-- Support for different payment methods
-- Generate sales invoices
-- Handle returns and exchanges
-
-### Reporting
-- Daily sales reports
-- Customer-wise sales analysis
-- Product-wise sales analysis
-- Inventory valuation reports
-- Profit/loss statements
-
-### Technical Features
-- Works offline without internet
-- Data synchronization when internet is available
-- Simple, intuitive interface for elderly users
-- Support for multiple stores in the future
-- Data backup and recovery
-
-## Technology Stack
-
-- **Frontend**: Electron.js with React for cross-platform desktop application
-- **Backend**: Node.js with Express
-- **Database**: SQLite for local storage, with optional MongoDB for cloud sync
-- **Printing**: Support for local printer integration
-- **Deployment**: Packaged as standalone desktop application
-
-## Getting Started
+## Installation
 
 ### Prerequisites
-- Node.js (v14 or higher)
-- npm (v6 or higher)
 
-### Installation
-1. Clone this repository
-   ```
-   git clone https://github.com/dineshgin/rural-hardware-store.git
-   cd rural-hardware-store
-   ```
+- Node.js (LTS version recommended)
+- npm (comes with Node.js)
 
-2. Install dependencies
-   ```
-   npm install
-   ```
+### Setup
 
-3. Start the application
-   ```
-   npm start
-   ```
+1. Clone the repository:
+```
+git clone https://github.com/dineshgin/rural-hardware-store.git
+```
 
-## Development Roadmap
+2. Navigate to the project directory:
+```
+cd rural-hardware-store
+```
 
-1. Phase 1: Core functionality (inventory, sales, customer management)
-2. Phase 2: Reporting and analytics
-3. Phase 3: Multi-store support and cloud synchronization
-4. Phase 4: Advanced features (supplier management, purchase orders)
+3. Install dependencies:
+```
+npm install
+```
+
+4. Start the application:
+```
+npm start
+```
+
+## Fixing SQLite Issues on macOS
+
+If you encounter issues with better-sqlite3 on macOS, run these commands directly in your terminal:
+
+```bash
+cd /Users/dineshkumargopalakrishnan/RetailApp
+
+# Clean up existing installation
+rm -rf node_modules
+rm -f package-lock.json
+
+# Install dependencies
+npm install
+
+# Install better-sqlite3 with specific configuration
+npm install better-sqlite3 --build-from-source --save
+
+# Install electron-rebuild
+npm install --save-dev electron-rebuild
+
+# Rebuild better-sqlite3 for Electron
+npx electron-rebuild -f -w better-sqlite3
+```
+
+Then try running the application again with:
+```
+npm start
+```
+
+## Usage
+
+The application provides an intuitive interface for managing your hardware store:
+
+- **Dashboard**: Overview of sales, inventory, and pending payments
+- **Sales**: Create and manage sales transactions
+- **Inventory**: Manage products and stock levels
+- **Customers**: Maintain customer information
+- **Reports**: Generate various reports for business analysis
+- **Settings**: Configure application settings
+
+## License
+
+MIT
